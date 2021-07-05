@@ -1,0 +1,128 @@
+<mvc:View controllerName="com.smr.ApprovalStatusReport.controller.Report" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
+	xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants">
+	<f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
+		<!-- DynamicPage Title -->
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="{i18n>title}"></Title>
+				</f:heading>
+			</f:DynamicPageTitle>
+		</f:title>
+		<!-- DynamicPage Header -->
+		<f:header>
+			<f:DynamicPageHeader pinnable="true">
+				<f:content>
+					<fb:FilterBar reset="onReset" search="onSearch" clear="onClear" cancel="onCancel" filtersDialogClosed="onFiltersDialogClosed"
+						showRestoreButton="true" showClearButton="true" showCancelButton="true" useToolbar="false" showGoOnFB="true">
+						<fb:filterItems>
+							<fb:FilterItem name="A" label="PR No">
+								<fb:control>
+									<Select id="prno" forceSelection="true" change="onSelectChange" items="{ path: '/ProductNames' }">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="B" label="Req Date">
+								<fb:control>
+									<Select id="reqDate" change="onSelectChange" forceSelection="true" items="{ path: '/ProductCategories' }">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="C" label="Approvers">
+								<fb:control>
+									<Select id="approvers" change="onSelectChange" forceSelection="true" items="{ path: '/ProductSuppliers' }">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="D" label="Requisitioner">
+								<fb:control>
+									<Select id="requisitioner" change="onSelectChange" forceSelection="true" items="{ path: '/ProductSuppliers' }">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="E" label="Department">
+								<fb:control>
+									<Select id="department" change="onSelectChange" forceSelection="true" items="{ path: '/ProductSuppliers' }">
+										<core:Item key="{key}" text="{name}"/>
+									</Select>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="F" label="Only Forward Case">
+								<fb:control>
+									<CheckBox text="(Forward)"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="G" label="Only Approved">
+								<fb:control>
+									<CheckBox text="(Approved)"/>
+								</fb:control>
+							</fb:FilterItem>
+							<fb:FilterItem name="H" label="Only Approval Pending">
+								<fb:control>
+									<CheckBox text="(Pending)"/>
+								</fb:control>
+							</fb:FilterItem>
+						</fb:filterItems>
+					</fb:FilterBar>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<!-- DynamicPage Content -->
+		<f:content>
+			<Table id="idProductsTable" inset="false" items="{ path: '/ProductCollection' }">
+				<columns>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="PR No."/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="Req Date"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="PR Title"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="PR Type"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="PR justification"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" wrapping="true" text="Pending with(inclusive of forwarded approvers)"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" wrapping="true" text="Forward case(yes/no)"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="Requsitioner"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" text="Department"/>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<Label design="Bold" wrapping="true" text="Approval status"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem vAlign="Middle">
+						<cells>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+							<Text text=""/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>
