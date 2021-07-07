@@ -10,8 +10,17 @@
 		"title": "{{appTitle}}",
 		"description": "{{appDescription}}",
 		"sourceTemplate": {
-			"id": "ui5template.basicSAPUI5ApplicationProject",
-			"version": "1.40.12"
+			"id": "servicecatalog.connectivityComponentForManifest",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"ZPR_APPROVAL_STATUS_SRV": {
+				"uri": "/sap/opu/odata/sap/ZPR_APPROVAL_STATUS_SRV/",
+				"type": "OData",
+				"settings": {
+					"localUri": "localService/metadata.xml"
+				}
+			}
 		}
 	},
 	"sap.ui": {
@@ -56,6 +65,16 @@
 				"settings": {
 					"bundleName": "com.smr.ApprovalStatusReport.i18n.i18n"
 				}
+			},
+			"": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "ZPR_APPROVAL_STATUS_SRV",
+				"preload": true
 			}
 		},
 		"resources": {

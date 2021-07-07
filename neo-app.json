@@ -36,6 +36,15 @@
         "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "DEV_GW_SMR",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "DEV_GW_SMR"
     }
   ],
   "sendWelcomeFileRedirect": true

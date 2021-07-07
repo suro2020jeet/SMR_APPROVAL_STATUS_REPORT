@@ -1,6 +1,6 @@
 <mvc:View controllerName="com.smr.ApprovalStatusReport.controller.Report" height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns:core="sap.ui.core"
 	xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:f="sap.f" xmlns:fb="sap.ui.comp.filterbar" xmlns:vm="sap.ui.comp.variants">
-	<f:DynamicPage id="dynamicPageId" headerExpanded="{/headerExpanded}">
+	<f:DynamicPage id="dynamicPageId" headerExpanded="true" preserveHeaderStateOnScroll="true">
 		<!-- DynamicPage Title -->
 		<f:title>
 			<f:DynamicPageTitle>
@@ -18,52 +18,50 @@
 						<fb:filterItems>
 							<fb:FilterItem name="A" label="PR No">
 								<fb:control>
-									<Select id="prno" forceSelection="true" change="onSelectChange" items="{ path: '/ProductNames' }">
-										<core:Item key="{key}" text="{name}"/>
-									</Select>
+									<ComboBox id="prno" change="onSelectChange" items="{ path: '/Get_PR_NoSet' }" placeholder="PR No." name="Banfn">
+										<core:Item key="{PR_No}" text="{PR_No}"/>
+									</ComboBox>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="B" label="Req Date">
 								<fb:control>
-									<Select id="reqDate" change="onSelectChange" forceSelection="true" items="{ path: '/ProductCategories' }">
-										<core:Item key="{key}" text="{name}"/>
-									</Select>
+									<DatePicker id="reqDate" displayFormat="dd/MM/yyyy" placeholder="Date" name="ReqDate"/>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="C" label="Approvers">
 								<fb:control>
-									<Select id="approvers" change="onSelectChange" forceSelection="true" items="{ path: '/ProductSuppliers' }">
+									<ComboBox id="approvers" change="onSelectChange"  items="{ path: '/ProductSuppliers' }" placeholder="Approvers" name="PendingUser">
 										<core:Item key="{key}" text="{name}"/>
-									</Select>
+									</ComboBox>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="D" label="Requisitioner">
 								<fb:control>
-									<Select id="requisitioner" change="onSelectChange" forceSelection="true" items="{ path: '/ProductSuppliers' }">
-										<core:Item key="{key}" text="{name}"/>
-									</Select>
+									<ComboBox id="requisitioner" change="onSelectChange"  items="{ path: '/Get_UserSet' }" placeholder="Requisitioner" name="ReqUser">
+										<core:Item key="{Name}" text="{Name}"/>
+									</ComboBox>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="E" label="Department">
 								<fb:control>
-									<Select id="department" change="onSelectChange" forceSelection="true" items="{ path: '/ProductSuppliers' }">
-										<core:Item key="{key}" text="{name}"/>
-									</Select>
+									<ComboBox id="department" change="onSelectChange"  items="{ path: '/Get_DeptSet' }" placeholder="Department" name="Depart">
+										<core:Item key="{Dept}" text="{Dept}"/>
+									</ComboBox>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="F" label="Only Forward Case">
 								<fb:control>
-									<CheckBox text="(Forward)"/>
+									<CheckBox text="(Forward)" name="ForwardCase"/>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="G" label="Only Approved">
 								<fb:control>
-									<CheckBox text="(Approved)"/>
+									<CheckBox text="(Approved)" name="ReqDate"/>
 								</fb:control>
 							</fb:FilterItem>
 							<fb:FilterItem name="H" label="Only Approval Pending">
 								<fb:control>
-									<CheckBox text="(Pending)"/>
+									<CheckBox text="(Pending)" name="ReqDate"/>
 								</fb:control>
 							</fb:FilterItem>
 						</fb:filterItems>
@@ -73,7 +71,8 @@
 		</f:header>
 		<!-- DynamicPage Content -->
 		<f:content>
-			<Table id="idProductsTable" inset="false" items="{ path: '/ProductCollection' }">
+			<Table busy="{viewModel>/busy}" id="table" inset="false" items="{ path: 'viewModel>/results' }" growing="true" sticky="ColumnHeaders"
+				growingScrollToLoad="true" growingThreshold="10">
 				<columns>
 					<Column minScreenWidth="Tablet" demandPopin="true">
 						<Label design="Bold" text="PR No."/>
@@ -109,16 +108,16 @@
 				<items>
 					<ColumnListItem vAlign="Middle">
 						<cells>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
-							<Text text=""/>
+							<Text text="{viewModel>Banfn}"/>
+							<Text text="{path: 'viewModel>ReqDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'dd/MM/yyyy' }}"/>
+							<Text text="{viewModel>PrTitle}"/>
+							<Text text="{viewModel>Bsart}"/>
+							<Text text="{viewModel>PrJusti}"/>
+							<Text text="{viewModel>PendingUser}"/>
+							<Text text="{viewModel>ForwardCase}"/>
+							<Text text="{viewModel>ReqUser}"/>
+							<Text text="{viewModel>Depart}"/>
+							<Text text="{viewModel>AppStatus}"/>
 						</cells>
 					</ColumnListItem>
 				</items>

@@ -2,44 +2,56 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller"
 ], function (Controller) {
 	"use strict";
-
 	return Controller.extend("com.smr.ApprovalStatusReport.controller.Report", {
-
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf com.smr.ApprovalStatusReport.view.Report
-		 */
 		onInit: function () {
+			this.getView().setModel(new sap.ui.model.json.JSONModel({
+				busy: true
+			}), "viewModel");
+			this.getOwnerComponent().getModel().read("/GET_Detail_DataSet", {
+				success: function (oData) {
+					this.getView().getModel("viewModel").setProperty("/busy", false);
+					this.getView().getModel("viewModel").setProperty("/results", oData.results);
+				}.bind(this),
+				error: function (oData) {
+					this.getView().getModel().setProperty("/busy", false);
+				}.bind(this)
+			});
 
 		},
-
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf com.smr.ApprovalStatusReport.view.Report
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf com.smr.ApprovalStatusReport.view.Report
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf com.smr.ApprovalStatusReport.view.Report
-		 */
-		//	onExit: function() {
-		//
-		//	}
-
+		onSearch: function (oEvent) {
+			debugger;
+			var ar = [];
+			for (var i = 0; i < oEvent.getParameter("selectionSet").length; i++) {
+				if (oEvent.getParameter("selectionSet")[i].getMetadata()._sClassName == "sap.m.ComboBox") {
+					if (oEvent.getParameter("selectionSet")[i].getRequired()) {
+						if (oEvent.getParameter("selectionSet")[i].getValue() == "") {
+							return sap.m.MessageToast.show(oEvent.getParameter("selectionSet")[i].getName() + " is required...");
+						} else {
+							ar.push(new sap.ui.model.Filter({
+								path: oEvent.getParameter("selectionSet")[i].getName(),
+								operator: sap.ui.model.FilterOperator.EQ,
+								value1: oEvent.getParameter("selectionSet")[i].getValue()
+							}));
+						}
+					} else {
+						if (oEvent.getParameter("selectionSet")[i].getValue() != "") {
+							ar.push(new sap.ui.model.Filter({
+								path: oEvent.getParameter("selectionSet")[i].getName(),
+								operator: sap.ui.model.FilterOperator.EQ,
+								value1: oEvent.getParameter("selectionSet")[i].getValue()
+							}));
+						}
+					}
+				}
+				// if (oEvent.getParameter("selectionSet")[i].getMetadata()._sClassName == "sap.m.CheckBox") {
+				// 	if (oEvent.getParameter("selectionSet")[i].getValue()) {
+				// 		ar.push("Yes");
+				// 	} else {
+				// 		ar.push("No");
+				// 	}
+				// }
+			}
+			this.byId("table").getBinding("items").filter([new sap.ui.model.Filter(ar, true)], "Application");
+		}
 	});
-
 });
